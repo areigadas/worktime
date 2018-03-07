@@ -1,11 +1,11 @@
 package uk.co.timesheet.dao;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,31 +17,34 @@ import uk.co.timesheet.model.Timesheet;
 public class TimesheetDAO {
 	
 	@PersistenceContext
-	private EntityManager manager;
-	
-	List<Timesheet> list = new ArrayList<>();
-
-	public void save(Timesheet timesheet) {
-		manager.persist(timesheet);	
-	}
+	private EntityManager em;
 
 	public List<Timesheet> getListOpenTasks() {
-		Calendar start = Calendar.getInstance();
-		list.add(new Timesheet("Adriana", "Teste MVC", "Fase1", start, null, "vai dar certo."));
-		list.add(new Timesheet("Martin", "Dynatrace", "Fase1", start, null, "já deu."));
-		list.add(new Timesheet("Felipe", "Nursery", "Animals", start, null, "Lion"));
-
-		return list;
+		return em.createQuery("select t from Timesheet t where endDate is null", Timesheet.class).getResultList();
 	}
 	
 	public List<Timesheet> getListAllTasks() {
-		Calendar start = Calendar.getInstance();
-		Calendar end = Calendar.getInstance();
-		end.add(Calendar.DAY_OF_MONTH, 1);
-		list.add(new Timesheet("Adriana", "Teste MVC", "Fase1", start, end, "finalizada"));
-		list.add(new Timesheet("Martin", "Dynatrace", "Fase1", start, end, "finalizada deu."));
-		list.add(new Timesheet("Felipe", "Nursery", "Animals", start, end, "finalizada"));
+		return em.createQuery("select t from Timesheet t where endDate is not null", Timesheet.class).getResultList();
+	}
+	
+	public void adiciona(Timesheet timesheet) {
+		em.persist(timesheet);	
+	}
 
-		return list;		
+	public void remove(Integer id) {
+		em.remove(findById(id));
+	}
+
+	private Timesheet findById(Integer id) {
+		TypedQuery<Timesheet> query = em.createQuery("select distinct(t) from Timesheet t where t.id = :id", 
+				Timesheet.class);
+		query.setParameter("id", id);		
+		return query.getSingleResult();
+	}
+
+	public void finishTask(Integer id) {
+		Timesheet task  = findById(id);
+		task.setEndDate(Calendar.getInstance());
+		em.merge(task);
 	}
 }

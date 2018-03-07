@@ -1,5 +1,6 @@
 package uk.co.timesheet.controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,16 @@ public class TimesheetController {
 		return new ModelAndView("home");
 	}
 
-	@RequestMapping(value="/form" ,method=RequestMethod.GET)
+	@RequestMapping(value="/form", method=RequestMethod.GET)
 	public ModelAndView form(Timesheet timesheet) {
 		ModelAndView modelAndView = new ModelAndView("form");
+		modelAndView.addObject("today", Calendar.getInstance().getTime());
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="/form" ,method=RequestMethod.POST)
+	@RequestMapping(value="/form", method=RequestMethod.POST)
 	public ModelAndView addTimesheet(Timesheet timesheet, RedirectAttributes redirectAttributes) {
-		dao.save(timesheet);
+		dao.adiciona(timesheet);
 		redirectAttributes.addFlashAttribute("mensagem", "New timesheet added!");
 		ModelAndView modelAndView = new ModelAndView("redirect:openedTasks");
 		return modelAndView;
@@ -55,4 +57,17 @@ public class TimesheetController {
 		modelAndView.addObject("openedTasks", listOpened);
 		return modelAndView;
 	}	
+	
+	@RequestMapping (value="/remove", method=RequestMethod.POST)
+	public ModelAndView remove(Integer id) {
+		dao.remove(id);
+		return new ModelAndView("redirect:allTasks");
+	}
+
+	@RequestMapping (value="/finish", method=RequestMethod.POST)
+	public ModelAndView finish(Integer id) {
+		System.out.println(id);
+		dao.finishTask(id);
+		return new ModelAndView("redirect:openedTasks");
+	}
 }

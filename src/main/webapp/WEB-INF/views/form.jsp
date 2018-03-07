@@ -3,15 +3,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <html>
 <head>
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.css">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.css">
-<script type="text/javascript" src="webjars/bootstrap/3.3.6/js/bootstrap.js"></script>  
+<script type="text/javascript" src="webjars/jquery/3.3.1-1/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="webjars/bootstrap/3.3.6/js/bootstrap.js"></script>  -->
 </head>
 <body>
 	<h2 class="text-center">Timesheet</h2>
-
+<div class="container">
 	<div class=" container justify-content-center">
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
@@ -41,12 +44,7 @@
 						</div>
 						<div class="row form-group ">
 							<label for="startDate">Start:</label>
-							<div class="input-group" id="startDate">
-								<form:input class="form-control" path="startDate" id="startDate" />
-								<span class="input-group-addon">
-                    					<span class="fa fa-calendar"></span>
-               					 </span>
-							</div>
+							<input type="text" class="form-control datepicker" name="startDate" id="startDate"/>
 						</div>
 						<div class="row form-group">
 							<label for="comment">Task:</label>
@@ -61,5 +59,15 @@
 		</div>
 		<div class="col-md-4"></div>
 	</div>	
+	
+	<div class="row">
+		<div class="container">
+			<form action="${s:mvcUrl('TC#home').build()}">
+				<button type="submit" class="btn btn-success">Home</button>
+			</form>
+		</div>
+	</div>	
+</div>
+<script type="text/javascript" src="<c:url value='/resources/js/form.js' />"></script>
 </body>
 </html>

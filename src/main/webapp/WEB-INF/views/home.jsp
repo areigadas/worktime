@@ -10,6 +10,7 @@
 <title>Timesheet System</title>
 </head>
 <body>
+<div class="container">
 	<h1 class="text-center">Timesheet - Main menu</h1>
 	<div class="container">
 		<div class="col-md-4"></div>
@@ -19,7 +20,7 @@
 					<div class=" text-center"><form action="<c:url value='/form'/>" method="GET">    
 						<button class="btn btn-success btn-lg btn-block" type="submit" id="start">START</button></form>
 					</div>
-					<div class=" text-center"><form action="<c:url value='/form'/>" method="POST">   
+					<div class=" text-center"><form action="<c:url value='/openedTasks'/>" method="POST">   
 						<button  class="btn btn-warning btn-lg btn-block" type="submit" id="finish">FINISH</button></form>
 					</div>
 					<div class=" text-center"><form action="<c:url value='/allTasks'/>" method="GET">
@@ -30,5 +31,6 @@
 		</div>
 		<div class="col-md-4"></div>
 	</div>
+</div>
 </body>
 </html>
