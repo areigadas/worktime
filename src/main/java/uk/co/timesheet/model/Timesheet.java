@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Timesheet {
@@ -13,19 +16,18 @@ public class Timesheet {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 	private String employee;
 	private String project;
 	private String fase;
+	@DateTimeFormat(pattern="dd/MM/yyyy hh:mm")
 	private Calendar startDate;
+	@DateTimeFormat(pattern="dd/MM/yyyy hh:mm")
 	private Calendar endDate;
+	@Lob
 	private String comment;
+	
+	public Timesheet() {		
+	}
 	
 	public Timesheet(String employee, String project, String fase, Calendar startDate, Calendar endDate,
 			String comment) {
@@ -36,6 +38,14 @@ public class Timesheet {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.comment = comment;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public String getEmployee() {
